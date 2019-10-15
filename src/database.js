@@ -4,7 +4,8 @@ const URI = process.env.MONGODB_URI || 'mongodb://localhost/testdb'
 
 mongosee.connect(URI, {
 	useNewUrlParser: true,
-	useCreateIndex: true
+	useCreateIndex: true,
+	useFindAndModify: false
 })
 
 const connection = mongosee.connection

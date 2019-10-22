@@ -7,6 +7,12 @@ const UserSchema = new Schema(
 			required: true,
 			trim: true,
 			unique: true
+		},
+		name: {
+			type: String,
+			required: false,
+			unique: false,
+			trim: true
 		}
 	},
 	{

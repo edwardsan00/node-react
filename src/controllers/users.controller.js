@@ -1,18 +1,54 @@
+const ModelUser = require('../models/User')
+
 const usersController = {
-	getUsers: (req, res) => {
-		res.json({ notes: [] })
+	getUsers: async (req, res) => {
+		try {
+			const result = await ModelUser.find()
+			res.json(result)
+		} catch (e) {
+			res.json({ message: 'Error obteniendo usuarios' })
+		}
 	},
-	getUser: (req, res) => {
-		res.json({ message: `get ${req.params.id}` })
+	getUser: async (req, res) => {
+		try {
+			const { id } = req.params
+			const result = ModelUser.findById(id)
+			res.json(result)
+			return
+		} catch (e) {
+			res.json({ message: 'Error obteniendo usuario' })
+		}
 	},
-	createUser: (req, res) => {
-		res.json({ message: `post ${req.params.id}` })
+	createUser: async (req, res) => {
+		try {
+			const { username, name } = req.body
+			const newUser = new ModelUser({
+				username,
+				name
+			})
+			await newUser.save()
+			res.json({ message: 'Guardado' })
+		} catch (e) {
+			res.json({ message: 'Error al crear usuario' })
+		}
 	},
-	updateUser: (req, res) => {
-		res.json({ message: `put ${req.params.id}` })
+	updateUser: async (req, res) => {
+		try {
+			const { id } = req.params
+			await ModelUser.findOneAndUpdate(id, req.body)
+			res.json({ message: 'Usuario Actualizado' })
+		} catch (e) {
+			res.json({ message: 'Error al update' })
+		}
 	},
-	deleteUser: (req, res) => {
-		res.json({ message: `delete ${req.params.id}` })
+	deleteUser: async (req, res) => {
+		try {
+			const { id } = req.params
+			await ModelUser.findOneAndRemove(id)
+			res.json({ message: 'Usuario elminado' })
+		} catch (e) {
+			res.json({ message: 'Error al eliminar' })
+		}
 	}
 }
 
